@@ -1,0 +1,358 @@
+﻿;!@Install@!UTF-8!
+;Default Disabled
+RunProgram=""
+
+;[/ai | SHIFT] Disabled
+AutoInstall=""
+
+;[/ail] Disabled
+AutoInstalll=""
+
+;Setup dialogs
+BeginPrompt="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 %product% Setup\par}"
+
+CancelPrompt="Are you sure you want to cancel?"
+
+ExtractTitle="Extracting files"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 Preparing:\par}"
+
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 Installation Is Complete\par\fs16\par\par\par
+%product% has been installed.\par}"
+
+GUIMode="0"
+GUIFlags="2+4+8+16+32+256+2048+4096"
+
+HelpText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 Usage:\tab\tab %%M [switches]\par
+\tab\tab All switches are optional.\par\par
+/y\par
+Passive mode, shows progress but requires no user interaction.\par
+/ai\par
+Quiet mode, no user input required, only extraction dialog is shown.\par
+/ail\par
+LP Passive mode. Default or specified LP is installed.\par
+/sfxlang:\par
+Language mode. Change default display language and/or language pack to install.\par
+/h | /?\par
+Display this help.\par\par
+Examples:\par\par
+Automatically install default language and display progress:\par
+%%M /y\par
+Silently install default language and display no progress:\par
+%%M /ai\par
+Silently install specific language (1031=German):\par
+%%M /sfxlang:1031 /ai\par
+Install French language and display progress:\par
+%%M /sfxlang:1036 /ail\par\par
+Optional command line switch to disable extraction dialog: /gm2\par
+(c) Microsoft Corporation. All Rights Reserved.\par}"
+
+SetEnvironment="product=.NET Framework 4.7.2"
+
+Title="Microsoft .NET Framework"
+;!@InstallEnd@!
+
+;!@Install@!UTF-8:Language:1025!
+RunProgram="netfx_FullLP_%%P_ara.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_ara.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_ara.msi /qb!"
+CancelPrompt="هل تريد بالتأكيد الإلغاء؟"
+ExtractTitle="يتم الآن استخراج الملفات"
+ExtractDialogText="{\rtf1\fbidis\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset178 Tahoma;}{\f1\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\ltrpar\sl240\slmult1\f0\rtlch\fs18\lang1025 يتم الآن التحضير\f1\ltrch\lang1033 :\lang9\par}"
+FinishMessage="{\rtf1\fbidis\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset178 Tahoma;}{\f1\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\ltrpar\sl240\slmult1\f0\rtlch\fs30\lang1025 اكتمل التثبيت\par\fs16\par\par\par
+تم تثبيت\f1\ltrch\lang1033  %product%\lang9\par}"
+;!@InstallEnd@:Language:1025!
+
+;!@Install@!UTF-8:Language:1028!
+RunProgram="netfx_FullLP_%%P_cht.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_cht.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_cht.msi /qb!"
+CancelPrompt="您確定要取消嗎?"
+ExtractTitle="正在解壓縮檔案"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\froman\fprq2\fcharset136 PMingLiU;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang1028 正在準備:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\froman\fprq2\fcharset136 PMingLiU;}{\f1\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang1028 安裝完成\par\fs16\par\par\par
+\f1 %product%\f0  安裝完成。\par}"
+;!@InstallEnd@:Language:1028!
+
+;!@Install@!UTF-8:Language:1029!
+RunProgram="netfx_FullLP_%%P_csy.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_csy.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_csy.msi /qb!"
+CancelPrompt="Opravdu chcete akci zrušit?"
+ExtractTitle="Extrahování souborů"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}{\f1\fnil\fcharset238 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 P\f1 ř\f0 íprava:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}{\f1\fnil\fcharset238 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 Instalace byla dokon\f1 č\f0 ena\par\fs16\par\par\par
+Produkt %product% byl nainstalován.\par}"
+;!@InstallEnd@:Language:1029!
+
+;!@Install@!UTF-8:Language:1030!
+RunProgram="netfx_FullLP_%%P_dan.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_dan.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_dan.msi /qb!"
+CancelPrompt="Er du sikker på, at du vil annullere?"
+ExtractTitle="Udpakker filer"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 Forbereder:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 Installationen er fuldført\par\fs16\par\par\par
+%product% er installeret.\par}"
+;!@InstallEnd@:Language:1030!
+
+;!@Install@!UTF-8:Language:1031!
+RunProgram="netfx_FullLP_%%P_deu.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_deu.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_deu.msi /qb!"
+CancelPrompt="Möchten Sie den Vorgang wirklich abbrechen?"
+ExtractTitle="Dateien werden extrahiert..."
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 Vorgang wird vorbereitet:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 Die Installation ist abgeschlossen.\par\fs16\par\par\par
+%product% wurde installiert.\par}"
+;!@InstallEnd@:Language:1031!
+
+;!@Install@!UTF-8:Language:1032!
+RunProgram="netfx_FullLP_%%P_ell.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_ell.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_ell.msi /qb!"
+CancelPrompt="Είστε βέβαιοι ότι θέλετε να ακυρώσετε;"
+ExtractTitle="Εξαγωγή αρχείων"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset161 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang1032 Προετοιμασία:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset161 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang1032 Η εγκατάσταση ολοκληρώθηκε\par\fs16\par\par\par
+Η εγκατάσταση του %product% ολοκληρώθηκε.\par}"
+;!@InstallEnd@:Language:1032!
+
+;!@Install@!UTF-8:Language:1033!
+;!@InstallEnd@:Language:1033!
+
+;!@Install@!UTF-8:Language:1035!
+RunProgram="netfx_FullLP_%%P_fin.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_fin.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_fin.msi /qb!"
+CancelPrompt="Haluatko varmasti peruuttaa?"
+ExtractTitle="Puretaan tiedostoja"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 Valmistellaan:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 Asennus on valmis\par\fs16\par\par\par
+%product% on asennettu.\par}"
+;!@InstallEnd@:Language:1035!
+
+;!@Install@!UTF-8:Language:1036!
+RunProgram="netfx_FullLP_%%P_fra.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_fra.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_fra.msi /qb!"
+CancelPrompt="Voulez-vous vraiment annuler ?"
+ExtractTitle="Extraction des fichiers"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 En cours de préparation :\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 Installation terminée\par\fs16\par\par\par
+%product% a été installé.\par}"
+;!@InstallEnd@:Language:1036!
+
+;!@Install@!UTF-8:Language:1037!
+RunProgram="netfx_FullLP_%%P_heb.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_heb.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_heb.msi /qb!"
+CancelPrompt="האם אתה בטוח שברצונך לבטל?"
+ExtractTitle="מחלץ קבצים"
+ExtractDialogText="{\rtf1\fbidis\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset177 Tahoma;}{\f1\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\ltrpar\sl240\slmult1\f0\rtlch\fs18\lang1037 מתכונן\f1\ltrch\lang1033 :\lang9\par}"
+FinishMessage="{\rtf1\fbidis\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset177 Tahoma;}{\f1\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\ltrpar\sl240\slmult1\f0\rtlch\fs30\lang1037 ההתקנה הושלמה\par\fs16\par\par\par
+\f1\ltrch\lang1033 %product% \f0\rtlch\lang1037 הותקן\f1\ltrch\lang1033 .\f0\rtlch\lang1037\par}"
+;!@InstallEnd@:Language:1037!
+
+;!@Install@!UTF-8:Language:1038!
+RunProgram="netfx_FullLP_%%P_hun.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_hun.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_hun.msi /qb!"
+CancelPrompt="Biztosan megszakítja a műveletet?"
+ExtractTitle="Fájlok kibontása"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}{\f1\fnil\fcharset238 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 El\f1 ők\f0 észítés:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}{\f1\fnil\fcharset238 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 A telepítés befejez\f1 őd\f0 ött.\par\fs16\par\par\par
+A %product% telepítése megtörtént.\par}"
+;!@InstallEnd@:Language:1038!
+
+;!@Install@!UTF-8:Language:1040!
+RunProgram="netfx_FullLP_%%P_ita.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_ita.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_ita.msi /qb!"
+CancelPrompt="Annullare?"
+ExtractTitle="Estrazione file"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 Preparazione:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 Installazione completata\par\fs16\par\par\par
+Installazione di %product% completata.\par}"
+;!@InstallEnd@:Language:1040!
+
+;!@Install@!UTF-8:Language:1041!
+RunProgram="netfx_FullLP_%%P_jpn.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_jpn.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_jpn.msi /qb!"
+CancelPrompt="本当にキャンセルしてもよろしいですか?"
+ExtractTitle="ファイルを抽出しています"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fswiss\fprq2\fcharset128 MS PGothic;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang1041 準備中:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fswiss\fprq2\fcharset128 MS PGothic;}{\f1\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang1041 インストールが完了しました\par\fs16\par\par\par
+\f1 %product%\f0  がインストールされました。\par}"
+;!@InstallEnd@:Language:1041!
+
+;!@Install@!UTF-8:Language:1042!
+RunProgram="netfx_FullLP_%%P_kor.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_kor.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_kor.msi /qb!"
+CancelPrompt="취소하시겠습니까?"
+ExtractTitle="파일 압축을 푸는 중"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fswiss\fprq2\fcharset129 Gulim;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang1042 준비 중:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fswiss\fprq2\fcharset129 Gulim;}{\f1\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang1042 설치 완료\par\fs16\par\par\par
+\f1 %product%\f0 이(가) 설치되었습니다.\par}"
+;!@InstallEnd@:Language:1042!
+
+;!@Install@!UTF-8:Language:1043!
+RunProgram="netfx_FullLP_%%P_nld.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_nld.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_nld.msi /qb!"
+CancelPrompt="Weet u zeker dat u wilt annuleren?"
+ExtractTitle="Bestanden uitpakken"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 Voorbereiden:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 Installatie voltooid\par\fs16\par\par\par
+%product% is geïnstalleerd.\par}"
+;!@InstallEnd@:Language:1043!
+
+;!@Install@!UTF-8:Language:1044!
+RunProgram="netfx_FullLP_%%P_nor.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_nor.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_nor.msi /qb!"
+CancelPrompt="Er du sikker på at du vil avbryte?"
+ExtractTitle="Pakke ut filer"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 Forbereder:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 Installasjonen er fullført\par\fs16\par\par\par
+%product% har blitt installert.\par}"
+;!@InstallEnd@:Language:1044!
+
+;!@Install@!UTF-8:Language:1045!
+RunProgram="netfx_FullLP_%%P_plk.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_plk.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_plk.msi /qb!"
+CancelPrompt="Czy na pewno chcesz anulować?"
+ExtractTitle="Wyodrębnianie plików"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 Przygotowywanie:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}{\f1\fnil\fcharset238 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 Instalacja zako\f1 ń\f0 czona\par\fs16\par\par\par
+Program %product% zosta\f1 ł\f0 zainstalowany.\par}"
+;!@InstallEnd@:Language:1045!
+
+;!@Install@!UTF-8:Language:1046!
+RunProgram="netfx_FullLP_%%P_ptb.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_ptb.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_ptb.msi /qb!"
+CancelPrompt="Tem certeza de que deseja cancelar?"
+ExtractTitle="Extraindo arquivos"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 Preparando:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 Instalação Concluída\par\fs16\par\par\par
+O %product% foi instalado.\par}"
+;!@InstallEnd@:Language:1046!
+
+;!@Install@!UTF-8:Language:1049!
+RunProgram="netfx_FullLP_%%P_rus.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_rus.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_rus.msi /qb!"
+CancelPrompt="Вы действительно хотите выполнить отмену?"
+ExtractTitle="Извлечение файлов"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset204 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang1049 Подготовка:\lang9\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset204 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang1049 Установка завершена\par\fs16\par\par\par
+Установка %product% завершена.\par}"
+;!@InstallEnd@:Language:1049!
+
+;!@Install@!UTF-8:Language:1053!
+RunProgram="netfx_FullLP_%%P_sve.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_sve.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_sve.msi /qb!"
+CancelPrompt="Vill du avbryta?"
+ExtractTitle="Filer extraheras"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 Förbereder:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 Installationen har slutförts\par\fs16\par\par\par
+%product% har installerats.\par}"
+;!@InstallEnd@:Language:1053!
+
+;!@Install@!UTF-8:Language:1055!
+RunProgram="netfx_FullLP_%%P_trk.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_trk.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_trk.msi /qb!"
+CancelPrompt="İptal etmek istediğinizden emin misiniz?"
+ExtractTitle="Dosyalar ayıklanıyor"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}{\f1\fnil\fcharset238 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 Haz\f1 ı\f0 rlan\f1 ı\f0 yor:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}{\f1\fnil\fcharset238 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 Yükleme Tamamland\f1 ı\par\fs16\par\par\par
+\f0 %product% yüklendi.\par}"
+;!@InstallEnd@:Language:1055!
+
+;!@Install@!UTF-8:Language:2052!
+RunProgram="netfx_FullLP_%%P_chs.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_chs.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_chs.msi /qb!"
+CancelPrompt="是否确实要取消?"
+ExtractTitle="正在提取文件"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fprq2\fcharset134 SimSun;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang2052 正在准备:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fprq2\fcharset134 SimSun;}{\f1\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang2052 安装完毕\par\fs16\par\par\par
+已安装 \f1 %product%\f0 。\par}"
+;!@InstallEnd@:Language:2052!
+
+;!@Install@!UTF-8:Language:2070!
+RunProgram="netfx_FullLP_%%P_ptg.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_ptg.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_ptg.msi /qb!"
+CancelPrompt="Tem a certeza de que pretende cancelar?"
+ExtractTitle="A extrair ficheiros"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 A Preparar:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 Instalação está Concluída\par\fs16\par\par\par
+O %product% foi instalado.\par}"
+;!@InstallEnd@:Language:2070!
+
+;!@Install@!UTF-8:Language:3082!
+RunProgram="netfx_FullLP_%%P_esn.msi /qb!"
+AutoInstall="netfx_FullLP_%%P_esn.msi /qn /norestart"
+AutoInstalll="netfx_FullLP_%%P_esn.msi /qb!"
+CancelPrompt="¿Está seguro de que desea cancelar la operación?"
+ExtractTitle="Extrayendo archivos"
+ExtractDialogText="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs18\lang9 Preparando:\par}"
+FinishMessage="{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+\viewkind4\uc1\pard\sl240\slmult1\f0\fs30\lang9 Se completó la instalación\par\fs16\par\par\par
+Se instaló %product%.\par}"
+;!@InstallEnd@:Language:3082!
