@@ -37,23 +37,25 @@ setlocal EnableExtensions EnableDelayedExpansion
 set MUI=(ARA,CHS,CHT,CSY,DAN,DEU,ELL,ESN,FIN,FRA,HEB,HUN,ITA,JPN,KOR,NLD,NOR,PLK,PTB,PTG,RUS,SVE,TRK)
 for /f "tokens=1 delims=-" %%i in ('dir /b LP\*NDP*.exe') do set "ndpver=%%iLP"
 for %%b in (D,N,P) do set ndpver=!ndpver:%%b=%%b!
+xcopy /criy BIN\NDP\LP\* %ndpver%\ >nul
+cd %ndpver%
 echo.
 echo Processing LangPacks . . .
 echo.
-cd /d "%~dp0"
-for %%a in %MUI% do if exist "LP\*NDP*%%a*.exe" if not exist "%ndpver%\netfx_FullLP_x86_%%a.msi" (
+for %%a in %MUI% do if exist "%~dp0LP\*NDP*%%a*.exe" if not exist "netfx_FullLP_x86_%%a.msi" (
 echo %%a
-BIN\7z.exe e LP\*%%a*.exe -o%ndpver%\temp netfx_FullLP_x64.msi netfx_FullLP_x86.msi netfx_FullLP.mzz -aoa >nul
-cscript //B BIN\NDP\LP\slim%%a.vbs %ndpver%\temp\netfx_FullLP_x86.msi
-cscript //B BIN\NDP\LP\slim%%a.vbs %ndpver%\temp\netfx_FullLP_x64.msi
-start /wait msiexec /a %ndpver%\temp\netfx_FullLP_x86.msi TARGETDIR=%cd%\%ndpver% /quiet
-start /wait msiexec /a %ndpver%\temp\netfx_FullLP_x64.msi TARGETDIR=%cd%\%ndpver% /quiet
-ren %cd%\%ndpver%\netfx_FullLP_x86.msi netfx_FullLP_x86_%%a.msi
-ren %cd%\%ndpver%\netfx_FullLP_x64.msi netfx_FullLP_x64_%%a.msi
+..\BIN\7z.exe e ..\LP\*%%a*.exe -otemp netfx_FullLP_x64.msi netfx_FullLP_x86.msi netfx_FullLP.mzz -aoa >nul
+cscript //B slim%%a.vbs temp\netfx_FullLP_x86.msi
+cscript //B slim%%a.vbs temp\netfx_FullLP_x64.msi
+start /wait msiexec /a temp\netfx_FullLP_x86.msi TARGETDIR="%cd%" /quiet
+start /wait msiexec /a temp\netfx_FullLP_x64.msi TARGETDIR="%cd%" /quiet
+ren netfx_FullLP_x86.msi netfx_FullLP_x86_%%a.msi
+ren netfx_FullLP_x64.msi netfx_FullLP_x64_%%a.msi
 )
 echo.
 echo Cleanup . . .
-rd /s /q %ndpver%\temp\
+del /f /q *.vbs *.ico
+rd /s /q temp\
 echo.
 echo Done.
 echo Press any key to exit.
