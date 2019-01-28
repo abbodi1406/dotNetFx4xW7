@@ -46,6 +46,8 @@ Silently install package and display no progress:
 NDP472-Slim-x86-x64-ENU.exe /ai /gm2
 ```
 
+* If you previously created 7z.SFX installer (main or langpack), move it to another location before attemping to use/run **dotNetFx.cmd** again.
+
 ## Create slim languages packages:
 
 * Place NDP*.exe files inside **LP** directory (Recommended to put all lang files, or you may put only specific languages).

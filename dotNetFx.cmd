@@ -40,8 +40,6 @@ pause >nul
 goto :eof
 )
 
-if not exist "BIN\heat.exe" set BuildMzz=0
-
 for /f %%i in ('dir /b *NDP*-ENU*.exe') do set "ndpack=%%i"
 for /f "tokens=1 delims=-" %%i in ('dir /b %ndpack%') do set "ndpver=%%i"
 
@@ -87,12 +85,14 @@ for /l %%i in (1,1,%_ci%) do (
 for /f "tokens=2 delims=-" %%a in ('dir /b !x86exe%%i!') do (
   set "x86kb%%i=%%a"
   set "x86msp%%i=%ndpver%-%%a-x86.msp"
+  for %%b in (K,B) do set x86kb%%i=!x86kb%%i:%%b=%%b!
   )
 )
 for /l %%i in (1,1,%_cx%) do (
 for /f "tokens=2 delims=-" %%a in ('dir /b !x64exe%%i!') do (
   set "x64kb%%i=%%a"
   set "x64msp%%i=%ndpver%-%%a-x64.msp"
+  for %%b in (K,B) do set x64kb%%i=!x64kb%%i:%%b=%%b!
   )
 )
 for /l %%i in (1,1,%_ci%) do (
@@ -147,6 +147,7 @@ cscript //B WiSumInf.vbs netfx_Full_x86.msi Subject=%name% Comments=%desc% Revis
 cscript //B WiSumInf.vbs netfx_Full_x64.msi Subject=%name% Comments=%desc% Revision=%guid64% Words=4
 
 if %BuildMzz%==0 goto :skip
+if not exist "%_wix%\heat.exe" goto :skip
 echo.
 echo Rebuild netfx_Full.mzz . . .
 cscript //B WiMakCab.vbs netfx_Full_x64.msi netfx

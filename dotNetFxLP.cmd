@@ -41,15 +41,15 @@ echo.
 echo Processing LangPacks . . .
 echo.
 cd /d "%~dp0"
-for %%a in %MUI% do if exist "LP\*NDP*%%a*.exe" if not exist "%ndpver%\netfx_FullLP_LDR_x86_%%a.msi" (
+for %%a in %MUI% do if exist "LP\*NDP*%%a*.exe" if not exist "%ndpver%\netfx_FullLP_x86_%%a.msi" (
 echo %%a
-BIN\7z.exe e LP\*%%a*.exe -o%ndpver%\temp netfx_FullLP_LDR_x64.msi netfx_FullLP_LDR_x86.msi netfx_FullLP_LDR.mzz -aoa >nul
-cscript //B BIN\NDP\LP\slim%%a.vbs %ndpver%\temp\netfx_FullLP_LDR_x86.msi
-cscript //B BIN\NDP\LP\slim%%a.vbs %ndpver%\temp\netfx_FullLP_LDR_x64.msi
-start /wait msiexec /a %ndpver%\temp\netfx_FullLP_LDR_x86.msi TARGETDIR=%cd%\%ndpver% /quiet
-start /wait msiexec /a %ndpver%\temp\netfx_FullLP_LDR_x64.msi TARGETDIR=%cd%\%ndpver% /quiet
-ren %cd%\%ndpver%\netfx_FullLP_LDR_x86.msi netfx_FullLP_LDR_x86_%%a.msi
-ren %cd%\%ndpver%\netfx_FullLP_LDR_x64.msi netfx_FullLP_LDR_x64_%%a.msi
+BIN\7z.exe e LP\*%%a*.exe -o%ndpver%\temp netfx_FullLP_x64.msi netfx_FullLP_x86.msi netfx_FullLP.mzz -aoa >nul
+cscript //B BIN\NDP\LP\slim%%a.vbs %ndpver%\temp\netfx_FullLP_x86.msi
+cscript //B BIN\NDP\LP\slim%%a.vbs %ndpver%\temp\netfx_FullLP_x64.msi
+start /wait msiexec /a %ndpver%\temp\netfx_FullLP_x86.msi TARGETDIR=%cd%\%ndpver% /quiet
+start /wait msiexec /a %ndpver%\temp\netfx_FullLP_x64.msi TARGETDIR=%cd%\%ndpver% /quiet
+ren %cd%\%ndpver%\netfx_FullLP_x86.msi netfx_FullLP_x86_%%a.msi
+ren %cd%\%ndpver%\netfx_FullLP_x64.msi netfx_FullLP_x64_%%a.msi
 )
 echo.
 echo Cleanup . . .
