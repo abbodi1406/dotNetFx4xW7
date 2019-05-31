@@ -1,6 +1,6 @@
-# .NET 4.7.2 Repack Installer for Windows 7 SP1 x86/x64
+# .NET 4.8/4.7.2 Repack Installer for Windows 7 SP1 x86/x64
 
-* Repacked slim installer for .NET Framework 4.7.2 with latest updates integrated and without extra setup payload.
+* Repacked slim installer for .NET Framework 4.8/4.7.2 with latest updates integrated and without extra setup payload.
 
 * Support creating slim updated installer for .NET 4.6 and later.
 
@@ -10,7 +10,7 @@ then, extract the files into **BIN** directory (you can delete the big sdk folde
 
 ## Create slim main package:
 
-* Place NDP*-ENU.exe file here next to the scripts (e.g. NDP472-KB4054541-x86-x64-ENU.exe or NDP472-KB4054530-x86-x64-AllOS-ENU.exe).
+* Place NDP*-ENU.exe file here next to the scripts (e.g. NDP48-x86-x64-AllOS-ENU.exe or NDP472-KB4054541-x86-x64-ENU.exe or NDP472-KB4054530-x86-x64-AllOS-ENU.exe).
 
 * If exist, also place any updates exe files here (make sure to get files for both x86 and x64).
 
