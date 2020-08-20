@@ -2,7 +2,7 @@
 :: Rebuild/Repack files inside netfx_Full.mzz
 set BuildMzz=1
 
-:: Show slipstreamed patches in Control Panel\Programs and Features\Installed Updates
+:: Show slipstreamed patches in "Control Panel\Programs and Features\Installed Updates"
 set ShowMsp=1
 
 %windir%\system32\reg.exe query "HKU\S-1-5-19" >nul 2>&1 || (
@@ -118,20 +118,20 @@ for /f "tokens=2* delims== " %%a in ('cscript //NoLogo WiSumInf.vbs temp\netfx_F
 for /f "tokens=2* delims== " %%a in ('cscript //NoLogo WiSumInf.vbs temp\netfx_Full_x64.msi ^| findstr /i Revision') do set "guid64=%%b"
 
 echo.
-echo Create administrative install ^(x86^) . . .
-start /wait msiexec /a temp\netfx_Full_x86.msi TARGETDIR=%cd% /quiet
-if not %msp%==0 (
-  for /l %%i in (1,1,%_ci%) do (
-  start /wait msiexec /a %cd%\netfx_Full_x86.msi PATCH=%cd%\!x86msp%%i! TARGETDIR=%cd% /quiet
-  )
-)
-
-echo.
 echo Create administrative install ^(x64^) . . .
 start /wait msiexec /a temp\netfx_Full_x64.msi TARGETDIR=%cd% /quiet
 if not %msp%==0 (
   for /l %%i in (1,1,%_cx%) do (
   start /wait msiexec /a %cd%\netfx_Full_x64.msi PATCH=%cd%\!x64msp%%i! TARGETDIR=%cd% /quiet
+  )
+)
+
+echo.
+echo Create administrative install ^(x86^) . . .
+start /wait msiexec /a temp\netfx_Full_x86.msi TARGETDIR=%cd% /quiet
+if not %msp%==0 (
+  for /l %%i in (1,1,%_ci%) do (
+  start /wait msiexec /a %cd%\netfx_Full_x86.msi PATCH=%cd%\!x86msp%%i! TARGETDIR=%cd% /quiet
   )
 )
 
@@ -182,6 +182,7 @@ cscript //B showmsp.vbs
 :end
 echo.
 echo Cleanup . . .
+cscript //B esu.vbs
 del /f /q netfx.* *.vbs *.msp *.ico >nul
 echo.
 echo Done.

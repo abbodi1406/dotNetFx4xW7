@@ -21,6 +21,16 @@ If WScript.Arguments.Count <> 0 Then
 Else
 	If fs.FileExists("netfx_Full_x64.msi") Then ProcessMSI "netfx_Full_x64.msi"
 	If fs.FileExists("netfx_Full_x86.msi") Then ProcessMSI "netfx_Full_x86.msi"
+	If fs.FileExists("netfx_FullLP_x64.msi") Then ProcessMSI "netfx_FullLP_x64.msi"
+	If fs.FileExists("netfx_FullLP_x86.msi") Then ProcessMSI "netfx_FullLP_x86.msi"
+	If fs.FileExists("netfx_Full_GDR_x64.msi") Then ProcessMSI "netfx_Full_GDR_x64.msi"
+	If fs.FileExists("netfx_Full_GDR_x86.msi") Then ProcessMSI "netfx_Full_GDR_x86.msi"
+	If fs.FileExists("netfx_Full_LDR_x64.msi") Then ProcessMSI "netfx_Full_LDR_x64.msi"
+	If fs.FileExists("netfx_Full_LDR_x86.msi") Then ProcessMSI "netfx_Full_LDR_x86.msi"
+	If fs.FileExists("netfx_FullLP_GDR_x64.msi") Then ProcessMSI "netfx_FullLP_GDR_x64.msi"
+	If fs.FileExists("netfx_FullLP_GDR_x86.msi") Then ProcessMSI "netfx_FullLP_GDR_x86.msi"
+	If fs.FileExists("netfx_FullLP_LDR_x64.msi") Then ProcessMSI "netfx_FullLP_LDR_x64.msi"
+	If fs.FileExists("netfx_FullLP_LDR_x86.msi") Then ProcessMSI "netfx_FullLP_LDR_x86.msi"
 End If
 '**********************************************************************
 '** Function; Query MSI database                                     **
@@ -136,6 +146,8 @@ Function ProcessMSI(file)
 	QueryDatabase("DELETE FROM `Directory` WHERE `Directory` = 'FrameworkSetupCache_x86_IronSetupCache'") 
 	QueryDatabase("DELETE FROM `Directory` WHERE `Directory` = 'Microsoft.NET_IronSetupCache_amd64'") 
 	QueryDatabase("DELETE FROM `Directory` WHERE `Directory` = 'Microsoft.NET_IronSetupCache_x86'") 
+	QueryDatabase("DELETE FROM `Directory` WHERE `Directory` = 'ProductSetupCacheRoot_amd64'") 
+	QueryDatabase("DELETE FROM `Directory` WHERE `Directory` = 'ProductSetupCacheRoot_x86'") 
 	QueryDatabase("DELETE FROM `Directory` WHERE `Directory` = 'WindowsFolder_IronSetupCache_amd64'") 
 	QueryDatabase("DELETE FROM `Directory` WHERE `Directory` = 'WindowsFolder_IronSetupCache_x86'") 
 	QueryDatabase("DELETE FROM `Directory` WHERE `Directory_Parent` = 'Framework_amd64_IronSetupCache'") 
@@ -149,10 +161,12 @@ Function ProcessMSI(file)
 	QueryDatabase("DELETE FROM `AdminExecuteSequence` WHERE `Action` = 'CA_WindowsFolder_IronSetupCache_x86'") 
 	QueryDatabase("DELETE FROM `AdminUISequence` WHERE `Action` = 'CA_WindowsFolder_IronSetupCache_amd64'") 
 	QueryDatabase("DELETE FROM `AdminUISequence` WHERE `Action` = 'CA_WindowsFolder_IronSetupCache_x86'") 
+	QueryDatabase("DELETE FROM `CustomAction` WHERE `Action` = 'CA_BlockDirectInstall'") 
 	QueryDatabase("DELETE FROM `CustomAction` WHERE `Action` = 'CA_WindowsFolder_IronSetupCache_amd64'") 
 	QueryDatabase("DELETE FROM `CustomAction` WHERE `Action` = 'CA_WindowsFolder_IronSetupCache_x86'") 
 	QueryDatabase("DELETE FROM `CustomAction` WHERE `Action` = 'CA_CompressSetupCache'") 
 	QueryDatabase("DELETE FROM `CustomAction` WHERE `Action` = 'CA_SetCompressSetupCache'") 
+	QueryDatabase("DELETE FROM `InstallExecuteSequence` WHERE `Action` = 'CA_BlockDirectInstall'") 
 	QueryDatabase("DELETE FROM `InstallExecuteSequence` WHERE `Action` = 'CA_WindowsFolder_IronSetupCache_amd64'") 
 	QueryDatabase("DELETE FROM `InstallExecuteSequence` WHERE `Action` = 'CA_WindowsFolder_IronSetupCache_x86'") 
 	QueryDatabase("DELETE FROM `InstallExecuteSequence` WHERE `Action` = 'CA_CompressSetupCache'") 
@@ -160,6 +174,7 @@ Function ProcessMSI(file)
 	QueryDatabase("DELETE FROM `InstallUISequence` WHERE `Action` = 'CA_WindowsFolder_IronSetupCache_amd64'") 
 	QueryDatabase("DELETE FROM `InstallUISequence` WHERE `Action` = 'CA_WindowsFolder_IronSetupCache_x86'") 
 	QueryDatabase("DELETE FROM `FeatureComponents` WHERE `Feature_` = 'F_Installer_IdentityARP'") 
+	QueryDatabase("DELETE FROM `FeatureComponents` WHERE `Feature_` = 'NetFx_Installer_Setup_ddf'") 
 	QueryDatabase("DELETE FROM `FeatureComponents` WHERE `Feature_` = 'MSICache_Full_amd64_enu'") 
 	QueryDatabase("DELETE FROM `FeatureComponents` WHERE `Feature_` = 'MSICache_Full_x86_enu'") 
 	QueryDatabase("DELETE FROM `FeatureComponents` WHERE `Feature_` = 'MSUCache_Full_amd64_enu'") 
@@ -366,7 +381,7 @@ Function ProcessMSI(file)
 	QueryDatabase("CREATE TABLE `Icon` (`Name` CHAR(72) NOT NULL, `Data` OBJECT NOT NULL PRIMARY KEY `Name`)") 
 	QueryDatabase(Array("DisplayIcon.ico", "INSERT INTO `Icon` (`Name`, `Data`) VALUES ('DisplayIcon', ?)")) 
 	QueryDatabase("INSERT INTO `Property` (`Property`,`Value`) VALUES ('ARPPRODUCTICON','DisplayIcon')") 
-	QueryDatabase("INSERT INTO `Property` (`Property`,`Value`) VALUES ('EXTUI','1')") 
+'	QueryDatabase("INSERT INTO `Property` (`Property`,`Value`) VALUES ('EXTUI','1')") 
 	QueryDatabase("DELETE FROM `Property` WHERE `Property` = 'ARPSYSTEMCOMPONENT'") 
 	Set db = nothing
 End Function

@@ -30,7 +30,7 @@ goto :eof
 echo.
 echo Create 7z archive . . .
 echo.
-attrib -A %_src%\* /S /D
+attrib -A -I %_src%\* /S /D
 BIN\7z.exe a %_src%.7z .\%_src%\* -mqs -mx -m0=BCJ2 -m1=LZMA:d26 -m2=LZMA:d19 -m3=LZMA:d19 -mb0:1 -mb0s1:2 -mb0s2:3 -bso0
 echo.
 echo Create 7z SFX . . .
