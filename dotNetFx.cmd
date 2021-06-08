@@ -171,6 +171,12 @@ for /l %%i in (1,1,%_ci%) do (
   (
   echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!x86kb%%i!.Classification' WHERE `Component` = '!x86kb%%i!.ARP.Add'"^)
   echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!x86kb%%i!.AllowRemoval <> 1' WHERE `Component` = '!x86kb%%i!.ARP.NoRemove'"^)
+  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!x86kb%%i!v2.Classification' WHERE `Component` = '!x86kb%%i!v2.ARP.Add'"^)
+  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!x86kb%%i!v2.AllowRemoval <> 1' WHERE `Component` = '!x86kb%%i!v2.ARP.NoRemove'"^)
+  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!x86kb%%i!v3.Classification' WHERE `Component` = '!x86kb%%i!v3.ARP.Add'"^)
+  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!x86kb%%i!v3.AllowRemoval <> 1' WHERE `Component` = '!x86kb%%i!v3.ARP.NoRemove'"^)
+  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!x86kb%%i!v4.Classification' WHERE `Component` = '!x86kb%%i!v4.ARP.Add'"^)
+  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!x86kb%%i!v4.AllowRemoval <> 1' WHERE `Component` = '!x86kb%%i!v4.ARP.NoRemove'"^)
   )>>showmsp.vbs
 )
   (
