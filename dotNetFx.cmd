@@ -2,6 +2,9 @@
 :: Rebuild/Repack files inside netfx_Full.mzz
 set BuildMzz=1
 
+:: Make compressed with LZX .mzz
+set CompressMzz=1
+
 :: Show slipstreamed patches in "Control Panel\Programs and Features\Installed Updates"
 set ShowMsp=1
 
@@ -153,11 +156,12 @@ echo Rebuild netfx_Full.mzz . . .
 cscript //B WiMakCab.vbs netfx_Full_x64.msi netfx
 mkdir SourceDir
 cd SourceDir
+if %CompressMzz%==1 (set _dcl=high) else set _dcl=none
 for /f "tokens=* delims=" %%i in (..\netfx.ddf) do move /y>nul %%i
 "%_wix%\heat.exe" dir . -nologo -g1 -gg -suid -scom -sreg -srd -sfrag -svb6 -indent 1 -t ..\netfx.xsl -template product -out ..\netfx.wxs
 cd ..
 "%_wix%\candle.exe" netfx.wxs -nologo -sw1074 >nul
-"%_wix%\light.exe" netfx.wixobj -nologo -spdb -sice:ICE21 -dcl:none >nul
+"%_wix%\light.exe" netfx.wixobj -nologo -spdb -sice:ICE21 -dcl:%_dcl% >nul
 ren product.cab netfx_Full.mzz
 rd /s /q ProgramFilesFolder\ Windows\ SourceDir\
 cscript //B WiSumInf.vbs netfx_Full_x86.msi Words=0
