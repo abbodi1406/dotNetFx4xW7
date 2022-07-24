@@ -16,6 +16,7 @@ then, extract the files into **BIN** directory (you can delete the big sdk folde
 
 * Optional, edit *dotNetFx.cmd* and change the two options values (1 or 0):  
 **BuildMzz**: Rebuild/Repack files inside *netfx_Full.mzz* instead administrative directories.  
+**CompressMzz**: Create LZX compressed *netfx_Full.mzz*. helpful if 7z SFX will not be used.  
 **ShowMsp**: Show slipstreamed patches in "Control Panel\Programs and Features\Installed Updates".
 
 * Run *dotNetFx.cmd* as administrator.
