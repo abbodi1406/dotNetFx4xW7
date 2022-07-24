@@ -3,7 +3,7 @@
 set BuildMzz=1
 
 :: Make compressed with LZX .mzz
-set CompressMzz=1
+set CompressMzz=0
 
 :: Show slipstreamed patches in "Control Panel\Programs and Features\Installed Updates"
 set ShowMsp=1
