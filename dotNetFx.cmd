@@ -5,6 +5,9 @@ set BuildMzz=1
 :: Make compressed with LZX .mzz
 set CompressMzz=0
 
+:: Create separate x86 only installer (smaller size). Only if BuildMzz=1
+set x86OnlyMzz=0
+
 :: Show slipstreamed patches in "Control Panel\Programs and Features\Installed Updates"
 set ShowMsp=1
 
@@ -163,6 +166,18 @@ cd ..
 "%_wix%\candle.exe" netfx.wxs -nologo -sw1074 >nul
 "%_wix%\light.exe" netfx.wixobj -nologo -spdb -sice:ICE21 -dcl:%_dcl% >nul
 ren product.cab netfx_Full.mzz
+if %x86OnlyMzz%==0 goto :skipx86
+echo.
+echo Rebuild netfx_Full_x86.mzz . . .
+cd SourceDir
+for /f "tokens=* delims=" %%i in ('dir /b^|findstr /i /l /c:"amd64"') do del /f /q %%i >nul
+"%_wix%\heat.exe" dir . -nologo -g1 -gg -suid -scom -sreg -srd -sfrag -svb6 -indent 1 -t ..\netfx.xsl -template product -out ..\netfx.wxs
+cd ..
+"%_wix%\candle.exe" netfx.wxs -nologo -sw1074 >nul
+"%_wix%\light.exe" netfx.wixobj -nologo -spdb -sice:ICE21 -dcl:%_dcl% >nul
+ren product.cab netfx_Full_x86.mzz
+
+:skipx86
 rd /s /q ProgramFilesFolder\ Windows\ SourceDir\
 cscript //B WiSumInf.vbs netfx_Full_x86.msi Words=0
 cscript //B WiSumInf.vbs netfx_Full_x64.msi Words=0
@@ -193,6 +208,11 @@ cscript //B showmsp.vbs
 echo.
 echo Cleanup . . .
 cscript //B esu.vbs
+if not %BuildMzz%==1 goto :cleanup
+if %x86OnlyMzz%==0 goto :cleanup
+copy /y /b netfx_Full_x86.msi netfx_Full_x86_Only.msi >nul
+cscript //B WiRunSQL.vbs netfx_Full_x86_Only.msi "UPDATE `Media` SET `Media`.`Cabinet`='netfx_full_x86.mzz' WHERE `Media`.`Cabinet`='netfx_full.mzz'"
+:cleanup
 del /f /q netfx.* *.vbs *.msp *.ico >nul
 echo.
 echo Done.
