@@ -1,8 +1,9 @@
+@setlocal DisableDelayedExpansion
 @echo off
 :: Rebuild/Repack files inside netfx_Full.mzz
 set BuildMzz=1
 
-:: Make compressed with LZX .mzz
+:: Create LZX high-compressed netfx_Full.mzz
 set CompressMzz=0
 
 :: Show slipstreamed patches in "Control Panel\Programs and Features\Installed Updates"
@@ -50,18 +51,31 @@ set msp=0
 for /f %%i in ('dir /b *NDP*.exe') do (
 if /i not "%%i"=="%ndpack%" call set /a msp+=1
 )
+for /f %%i in ('dir /b netfx_Patch*.msp') do (
+call set /a msp+=1
+)
 setlocal EnableExtensions EnableDelayedExpansion
 if %msp%==0 (
 set ShowMsp=0
 goto :extract
 )
+set nkb=
 set _ci=0
 for /f %%i in ('dir /b /od *NDP*x86*.exe') do if /i not "%%i"=="%ndpack%" (
 set /a _ci+=1
 set "x86exe!_ci!=%%i"
 )
+for /f %%i in ('dir /b /od netfx_Patch_x86.msp') do (
+set /a _ci+=1
+set "x86exe!_ci!=%%i"
+for /f %%# in ('cscript //NoLogo BIN\NDP\mspkb.vbs %%i') do set "nkb=%%#"
+)
 set _cx=0
 for /f %%i in ('dir /b /od *NDP*x64*.exe') do if /i not "%%i"=="%ndpack%" (
+set /a _cx+=1
+set "x64exe!_cx!=%%i"
+)
+for /f %%i in ('dir /b /od netfx_Patch_x64.msp') do (
 set /a _cx+=1
 set "x64exe!_cx!=%%i"
 )
@@ -73,6 +87,8 @@ echo Press any key to exit...
 pause >nul
 goto :eof
 )
+if not defined nkb goto :extract
+if /i "%nkb:~-2,1%"=="v" set "nkb=%nkb:~0,-2%"
 
 :extract
 echo.
@@ -85,26 +101,44 @@ if %msp%==0 (
 goto :slim
 )
 for /l %%i in (1,1,%_ci%) do (
-for /f "tokens=2 delims=-" %%a in ('dir /b !x86exe%%i!') do (
-  set "x86kb%%i=%%a"
-  set "x86msp%%i=%ndpver%-%%a-x86.msp"
-  for %%b in (K,B) do set x86kb%%i=!x86kb%%i:%%b=%%b!
+dir /b !x86exe%%i! | findstr /i \.exe >nul && (
+  for /f "tokens=2 delims=-" %%a in ('dir /b !x86exe%%i!') do (
+    set "x86kb%%i=%%a"
+    set "x86msp%%i=%ndpver%-%%a-x86.msp"
+    for %%b in (K,B) do set x86kb%%i=!x86kb%%i:%%b=%%b!
+    )
+  ) || (
+    set "x86kb%%i=%nkb%"
+    set "x86msp%%i=%ndpver%-%nkb%-x86.msp"
   )
 )
 for /l %%i in (1,1,%_cx%) do (
-for /f "tokens=2 delims=-" %%a in ('dir /b !x64exe%%i!') do (
-  set "x64kb%%i=%%a"
-  set "x64msp%%i=%ndpver%-%%a-x64.msp"
-  for %%b in (K,B) do set x64kb%%i=!x64kb%%i:%%b=%%b!
+dir /b !x64exe%%i! | findstr /i \.exe >nul && (
+  for /f "tokens=2 delims=-" %%a in ('dir /b !x64exe%%i!') do (
+    set "x64kb%%i=%%a"
+    set "x64msp%%i=%ndpver%-%%a-x64.msp"
+    for %%b in (K,B) do set x64kb%%i=!x64kb%%i:%%b=%%b!
+    )
+  ) || (
+    set "x64kb%%i=%nkb%"
+    set "x64msp%%i=%ndpver%-%nkb%-x64.msp"
   )
 )
 for /l %%i in (1,1,%_ci%) do (
-BIN\7z.exe e !x86exe%%i! -o%ndpver% *.msp >nul
-for /f %%a in ('dir /b %ndpver%\*!x86kb%%i!.msp') do ren %ndpver%\%%a !x86msp%%i!
+  if exist "*!x86kb%%i!*x86*.exe" (
+  BIN\7z.exe e !x86exe%%i! -o%ndpver% *.msp >nul
+  for /f %%a in ('dir /b %ndpver%\*!x86kb%%i!.msp') do ren %ndpver%\%%a !x86msp%%i!
+  ) else (
+  copy /y !x86exe%%i! %ndpver%\!x86msp%%i! >nul
+  )
 )
 for /l %%i in (1,1,%_cx%) do (
-BIN\7z.exe e !x64exe%%i! -o%ndpver% *.msp >nul
-for /f %%a in ('dir /b %ndpver%\*!x64kb%%i!.msp') do ren %ndpver%\%%a !x64msp%%i!
+  if exist "*!x64kb%%i!*x64*.exe" (
+  BIN\7z.exe e !x64exe%%i! -o%ndpver% *.msp >nul
+  for /f %%a in ('dir /b %ndpver%\*!x64kb%%i!.msp') do ren %ndpver%\%%a !x64msp%%i!
+  ) else (
+  copy /y !x64exe%%i! %ndpver%\!x64msp%%i! >nul
+  )
 )
 
 :slim
@@ -151,12 +185,12 @@ cscript //B WiSumInf.vbs netfx_Full_x64.msi Subject=%name% Comments=%desc% Revis
 
 if %BuildMzz%==0 goto :skip
 if not exist "%_wix%\heat.exe" goto :skip
+if %CompressMzz%==0 (set _dcl=none) else (set _dcl=high)
 echo.
 echo Rebuild netfx_Full.mzz . . .
 cscript //B WiMakCab.vbs netfx_Full_x64.msi netfx
 mkdir SourceDir
 cd SourceDir
-if %CompressMzz%==1 (set _dcl=high) else set _dcl=none
 for /f "tokens=* delims=" %%i in (..\netfx.ddf) do move /y>nul %%i
 "%_wix%\heat.exe" dir . -nologo -g1 -gg -suid -scom -sreg -srd -sfrag -svb6 -indent 1 -t ..\netfx.xsl -template product -out ..\netfx.wxs
 cd ..

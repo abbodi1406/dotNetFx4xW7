@@ -42,7 +42,7 @@ Silently install package and display no progress:\par
 %%M /ai /gm2\par\par
 (c) Microsoft Corporation. All Rights Reserved.\par}"
 
-SetEnvironment="product=.NET Framework 4.7.2"
+SetEnvironment="product=.NET Framework 4.8"
 
 Title="Microsoft .NET Framework"
 ;!@InstallEnd@!
