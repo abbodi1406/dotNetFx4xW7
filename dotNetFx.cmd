@@ -9,6 +9,11 @@ set CompressMzz=0
 :: Show slipstreamed patches in "Control Panel\Programs and Features\Installed Updates"
 set ShowMsp=1
 
+:: Create single-architecture repack
+:: set to x64 or x86
+:: leave blank to create both
+set Single=
+
 %windir%\system32\reg.exe query "HKU\S-1-5-19" >nul 2>&1 || (
 echo ==== ERROR ====
 echo This script require administrator privileges.
@@ -54,6 +59,24 @@ if /i not "%%i"=="%ndpack%" call set /a msp+=1
 for /f %%i in ('dir /b netfx_Patch*.msp') do (
 call set /a msp+=1
 )
+
+set do86=1
+set do64=1
+set solo=0
+set rpck=x64/x86
+if /i "%Single%"=="x64" (
+set do86=0
+set solo=1
+set rpck=x64-only
+)
+if /i "%Single%"=="x86" (
+set do64=0
+set solo=1
+set rpck=x86-only
+)
+echo.
+echo Create %rpck% repack . . .
+
 setlocal EnableExtensions EnableDelayedExpansion
 if %msp%==0 (
 set ShowMsp=0
@@ -61,25 +84,26 @@ goto :extract
 )
 set nkb=
 set _ci=0
-for /f %%i in ('dir /b /od *NDP*x86*.exe') do if /i not "%%i"=="%ndpack%" (
+if %do86% equ 1 for /f %%i in ('dir /b /od *NDP*x86*.exe') do if /i not "%%i"=="%ndpack%" (
 set /a _ci+=1
 set "x86exe!_ci!=%%i"
 )
-for /f %%i in ('dir /b /od netfx_Patch_x86.msp') do (
+if %do86% equ 1 for /f %%i in ('dir /b /od netfx_Patch_x86.msp') do (
 set /a _ci+=1
 set "x86exe!_ci!=%%i"
 for /f %%# in ('cscript //NoLogo BIN\NDP\mspkb.vbs %%i') do set "nkb=%%#"
 )
 set _cx=0
-for /f %%i in ('dir /b /od *NDP*x64*.exe') do if /i not "%%i"=="%ndpack%" (
+if %do64% equ 1 for /f %%i in ('dir /b /od *NDP*x64*.exe') do if /i not "%%i"=="%ndpack%" (
 set /a _cx+=1
 set "x64exe!_cx!=%%i"
 )
-for /f %%i in ('dir /b /od netfx_Patch_x64.msp') do (
+if %do64% equ 1 for /f %%i in ('dir /b /od netfx_Patch_x64.msp') do (
 set /a _cx+=1
 set "x64exe!_cx!=%%i"
+for /f %%# in ('cscript //NoLogo BIN\NDP\mspkb.vbs %%i') do set "nkb=%%#"
 )
-if not %_ci%==%_cx% (
+if %solo% equ 0 if %_ci% neq %_cx% (
 echo ==== ERROR ====
 echo Update files count is not equal for both architectures.
 echo.
@@ -100,7 +124,7 @@ BIN\7z.exe e %ndpack% -o%ndpver%\temp netfx_Full_x64.msi netfx_Full_x86.msi netf
 if %msp%==0 (
 goto :slim
 )
-for /l %%i in (1,1,%_ci%) do (
+if %do86% equ 1 for /l %%i in (1,1,%_ci%) do (
 dir /b !x86exe%%i! | findstr /i \.exe >nul && (
   for /f "tokens=2 delims=-" %%a in ('dir /b !x86exe%%i!') do (
     set "x86kb%%i=%%a"
@@ -112,7 +136,7 @@ dir /b !x86exe%%i! | findstr /i \.exe >nul && (
     set "x86msp%%i=%ndpver%-%nkb%-x86.msp"
   )
 )
-for /l %%i in (1,1,%_cx%) do (
+if %do64% equ 1 for /l %%i in (1,1,%_cx%) do (
 dir /b !x64exe%%i! | findstr /i \.exe >nul && (
   for /f "tokens=2 delims=-" %%a in ('dir /b !x64exe%%i!') do (
     set "x64kb%%i=%%a"
@@ -124,7 +148,7 @@ dir /b !x64exe%%i! | findstr /i \.exe >nul && (
     set "x64msp%%i=%ndpver%-%nkb%-x64.msp"
   )
 )
-for /l %%i in (1,1,%_ci%) do (
+if %do86% equ 1 for /l %%i in (1,1,%_ci%) do (
   if exist "*!x86kb%%i!*x86*.exe" (
   BIN\7z.exe e !x86exe%%i! -o%ndpver% *.msp >nul
   for /f %%a in ('dir /b %ndpver%\*!x86kb%%i!.msp') do ren %ndpver%\%%a !x86msp%%i!
@@ -132,7 +156,7 @@ for /l %%i in (1,1,%_ci%) do (
   copy /y !x86exe%%i! %ndpver%\!x86msp%%i! >nul
   )
 )
-for /l %%i in (1,1,%_cx%) do (
+if %do64% equ 1 for /l %%i in (1,1,%_cx%) do (
   if exist "*!x64kb%%i!*x64*.exe" (
   BIN\7z.exe e !x64exe%%i! -o%ndpver% *.msp >nul
   for /f %%a in ('dir /b %ndpver%\*!x64kb%%i!.msp') do ren %ndpver%\%%a !x64msp%%i!
@@ -146,14 +170,15 @@ echo.
 echo Slim MSI database . . .
 xcopy /criy BIN\NDP\* %ndpver%\ >nul
 cd %ndpver%
-cscript //B slim.vbs temp\netfx_Full_x86.msi
-cscript //B slim.vbs temp\netfx_Full_x64.msi
+if %do86% equ 1 cscript //B slim.vbs temp\netfx_Full_x86.msi
+if %do64% equ 1 cscript //B slim.vbs temp\netfx_Full_x64.msi
 if %BuildMzz%==1 if %msp%==0 goto :noop
 for /f "tokens=2* delims== " %%a in ('cscript //NoLogo WiSumInf.vbs temp\netfx_Full_x86.msi ^| findstr /i Subject') do set name="%%b"
 for /f "tokens=2* delims== " %%a in ('cscript //NoLogo WiSumInf.vbs temp\netfx_Full_x86.msi ^| findstr /i Comments') do set desc="%%b"
 for /f "tokens=2* delims== " %%a in ('cscript //NoLogo WiSumInf.vbs temp\netfx_Full_x86.msi ^| findstr /i Revision') do set "guid86=%%b"
 for /f "tokens=2* delims== " %%a in ('cscript //NoLogo WiSumInf.vbs temp\netfx_Full_x64.msi ^| findstr /i Revision') do set "guid64=%%b"
 
+if %do64% equ 0 goto :no64
 echo.
 echo Create administrative install ^(x64^) . . .
 start /wait msiexec /a temp\netfx_Full_x64.msi TARGETDIR=%cd% /quiet
@@ -163,6 +188,8 @@ if not %msp%==0 (
   )
 )
 
+:no64
+if %do86% equ 0 goto :no86
 echo.
 echo Create administrative install ^(x86^) . . .
 start /wait msiexec /a temp\netfx_Full_x86.msi TARGETDIR=%cd% /quiet
@@ -172,23 +199,30 @@ if not %msp%==0 (
   )
 )
 
+:no86
 rd /s /q temp\
 
 echo.
 echo Adjust MSI properties . . .
-if not %msp%==0 (
-cscript //B WiFilVer.vbs netfx_Full_x86.msi /u
-cscript //B WiFilVer.vbs netfx_Full_x64.msi /u
-)
+if exist "netfx_Full_x86.msi" (
+if not %msp%==0 cscript //B WiFilVer.vbs netfx_Full_x86.msi /u
 cscript //B WiSumInf.vbs netfx_Full_x86.msi Subject=%name% Comments=%desc% Revision=%guid86% Words=4
+)
+if exist "netfx_Full_x64.msi" (
+if not %msp%==0 cscript //B WiFilVer.vbs netfx_Full_x64.msi /u
 cscript //B WiSumInf.vbs netfx_Full_x64.msi Subject=%name% Comments=%desc% Revision=%guid64% Words=4
+)
 
 if %BuildMzz%==0 goto :skip
 if not exist "%_wix%\heat.exe" goto :skip
 if %CompressMzz%==0 (set _dcl=none) else (set _dcl=high)
 echo.
 echo Rebuild netfx_Full.mzz . . .
+if exist "netfx_Full_x64.msi" (
 cscript //B WiMakCab.vbs netfx_Full_x64.msi netfx
+) else (
+cscript //B WiMakCab.vbs netfx_Full_x86.msi netfx
+)
 mkdir SourceDir
 cd SourceDir
 for /f "tokens=* delims=" %%i in (..\netfx.ddf) do move /y>nul %%i
@@ -198,23 +232,34 @@ cd ..
 "%_wix%\light.exe" netfx.wixobj -nologo -spdb -sice:ICE21 -dcl:%_dcl% >nul
 ren product.cab netfx_Full.mzz
 rd /s /q ProgramFilesFolder\ Windows\ SourceDir\
+if exist "netfx_Full_x86.msi" (
 cscript //B WiSumInf.vbs netfx_Full_x86.msi Words=0
+)
+if exist "netfx_Full_x64.msi" (
 cscript //B WiSumInf.vbs netfx_Full_x64.msi Words=0
+)
 
 :skip
 if %ShowMsp%==0 goto :end
+if %_ci% gtr 0 (
+set _cz=%_ci%
+set _ca=x86
+) else (
+set _cz=%_cx%
+set _ca=x64
+)
 echo.
 echo Show slipstreamed updates . . .
-for /l %%i in (1,1,%_ci%) do (
+for /l %%i in (1,1,%_cz%) do (
   (
-  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!x86kb%%i!.Classification' WHERE `Component` = '!x86kb%%i!.ARP.Add'"^)
-  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!x86kb%%i!.AllowRemoval <> 1' WHERE `Component` = '!x86kb%%i!.ARP.NoRemove'"^)
-  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!x86kb%%i!v2.Classification' WHERE `Component` = '!x86kb%%i!v2.ARP.Add'"^)
-  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!x86kb%%i!v2.AllowRemoval <> 1' WHERE `Component` = '!x86kb%%i!v2.ARP.NoRemove'"^)
-  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!x86kb%%i!v3.Classification' WHERE `Component` = '!x86kb%%i!v3.ARP.Add'"^)
-  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!x86kb%%i!v3.AllowRemoval <> 1' WHERE `Component` = '!x86kb%%i!v3.ARP.NoRemove'"^)
-  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!x86kb%%i!v4.Classification' WHERE `Component` = '!x86kb%%i!v4.ARP.Add'"^)
-  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!x86kb%%i!v4.AllowRemoval <> 1' WHERE `Component` = '!x86kb%%i!v4.ARP.NoRemove'"^)
+  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!%_ca%kb%%i!.Classification' WHERE `Component` = '!%_ca%kb%%i!.ARP.Add'"^)
+  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!%_ca%kb%%i!.AllowRemoval <> 1' WHERE `Component` = '!%_ca%kb%%i!.ARP.NoRemove'"^)
+  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!%_ca%kb%%i!v2.Classification' WHERE `Component` = '!%_ca%kb%%i!v2.ARP.Add'"^)
+  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!%_ca%kb%%i!v2.AllowRemoval <> 1' WHERE `Component` = '!%_ca%kb%%i!v2.ARP.NoRemove'"^)
+  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!%_ca%kb%%i!v3.Classification' WHERE `Component` = '!%_ca%kb%%i!v3.ARP.Add'"^)
+  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!%_ca%kb%%i!v3.AllowRemoval <> 1' WHERE `Component` = '!%_ca%kb%%i!v3.ARP.NoRemove'"^)
+  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!%_ca%kb%%i!v4.Classification' WHERE `Component` = '!%_ca%kb%%i!v4.ARP.Add'"^)
+  echo.  QueryDatabase^("UPDATE `Component` SET Condition = '!%_ca%kb%%i!v4.AllowRemoval <> 1' WHERE `Component` = '!%_ca%kb%%i!v4.ARP.NoRemove'"^)
   )>>showmsp.vbs
 )
   (
