@@ -14,6 +14,9 @@ set ShowMsp=1
 :: leave blank to create both
 set Single=
 
+if /i "%~1"=="x64" set Single=x64
+if /i "%~1"=="x86" set Single=x86
+
 %windir%\system32\reg.exe query "HKU\S-1-5-19" >nul 2>&1 || (
 echo ==== ERROR ====
 echo This script require administrator privileges.
@@ -53,10 +56,10 @@ for /f %%i in ('dir /b *NDP*-ENU*.exe') do set "ndpack=%%i"
 for /f "tokens=1 delims=-" %%i in ('dir /b %ndpack%') do set "ndpver=%%i"
 
 set msp=0
-for /f %%i in ('dir /b *NDP*.exe') do (
+for /f %%i in ('dir /b *NDP*.exe 2^>nul') do (
 if /i not "%%i"=="%ndpack%" call set /a msp+=1
 )
-for /f %%i in ('dir /b netfx_Patch*.msp') do (
+for /f %%i in ('dir /b netfx_Patch*.msp 2^>nul') do (
 call set /a msp+=1
 )
 
@@ -82,26 +85,25 @@ if %msp%==0 (
 set ShowMsp=0
 goto :extract
 )
-set nkb=
 set _ci=0
-if %do86% equ 1 for /f %%i in ('dir /b /od *NDP*x86*.exe') do if /i not "%%i"=="%ndpack%" (
+if %do86% equ 1 for /f %%i in ('dir /b /od *NDP*x86*.exe 2^>nul') do if /i not "%%i"=="%ndpack%" (
 set /a _ci+=1
 set "x86exe!_ci!=%%i"
 )
-if %do86% equ 1 for /f %%i in ('dir /b /od netfx_Patch_x86.msp') do (
+if %do86% equ 1 for /f %%i in ('dir /b /od netfx_Patch_x86*.msp 2^>nul') do (
 set /a _ci+=1
 set "x86exe!_ci!=%%i"
-for /f %%# in ('cscript //NoLogo BIN\NDP\mspkb.vbs %%i') do set "nkb=%%#"
+for /f %%# in ('cscript //NoLogo BIN\NDP\mspkb.vbs %%i') do set "x86kb!_ci!=%%#"
 )
 set _cx=0
-if %do64% equ 1 for /f %%i in ('dir /b /od *NDP*x64*.exe') do if /i not "%%i"=="%ndpack%" (
+if %do64% equ 1 for /f %%i in ('dir /b /od *NDP*x64*.exe 2^>nul') do if /i not "%%i"=="%ndpack%" (
 set /a _cx+=1
 set "x64exe!_cx!=%%i"
 )
-if %do64% equ 1 for /f %%i in ('dir /b /od netfx_Patch_x64.msp') do (
+if %do64% equ 1 for /f %%i in ('dir /b /od netfx_Patch_x64*.msp 2^>nul') do (
 set /a _cx+=1
 set "x64exe!_cx!=%%i"
-for /f %%# in ('cscript //NoLogo BIN\NDP\mspkb.vbs %%i') do set "nkb=%%#"
+for /f %%# in ('cscript //NoLogo BIN\NDP\mspkb.vbs %%i') do set "x64kb!_cx!=%%#"
 )
 if %solo% equ 0 if %_ci% neq %_cx% (
 echo ==== ERROR ====
@@ -111,8 +113,14 @@ echo Press any key to exit...
 pause >nul
 goto :eof
 )
-if not defined nkb goto :extract
-if /i "%nkb:~-2,1%"=="v" set "nkb=%nkb:~0,-2%"
+if defined x86kb1 for /l %%i in (1,1,%_ci%) do (
+if /i "!x86kb%%i:~-2,1!"=="v" call set "x86kb%%i=!x86kb:~0,-2!"
+for %%b in (K,B) do set "x86kb%%i=!x86kb%%i:%%b=%%b!"
+)
+if defined x64kb1 for /l %%i in (1,1,%_cx%) do (
+if /i "!x64kb%%i:~-2,1!"=="v" call set "x64kb%%i=!x64kb:~0,-2!"
+for %%b in (K,B) do set "x64kb%%i=!x64kb%%i:%%b=%%b!"
+)
 
 :extract
 echo.
@@ -129,11 +137,10 @@ dir /b !x86exe%%i! | findstr /i \.exe >nul && (
   for /f "tokens=2 delims=-" %%a in ('dir /b !x86exe%%i!') do (
     set "x86kb%%i=%%a"
     set "x86msp%%i=%ndpver%-%%a-x86.msp"
-    for %%b in (K,B) do set x86kb%%i=!x86kb%%i:%%b=%%b!
+    for %%b in (K,B) do set "x86kb%%i=!x86kb%%i:%%b=%%b!"
     )
   ) || (
-    set "x86kb%%i=%nkb%"
-    set "x86msp%%i=%ndpver%-%nkb%-x86.msp"
+    set "x86msp%%i=%ndpver%-!x86kb%%i!-x86.msp"
   )
 )
 if %do64% equ 1 for /l %%i in (1,1,%_cx%) do (
@@ -141,11 +148,10 @@ dir /b !x64exe%%i! | findstr /i \.exe >nul && (
   for /f "tokens=2 delims=-" %%a in ('dir /b !x64exe%%i!') do (
     set "x64kb%%i=%%a"
     set "x64msp%%i=%ndpver%-%%a-x64.msp"
-    for %%b in (K,B) do set x64kb%%i=!x64kb%%i:%%b=%%b!
+    for %%b in (K,B) do set "x64kb%%i=!x64kb%%i:%%b=%%b!"
     )
   ) || (
-    set "x64kb%%i=%nkb%"
-    set "x64msp%%i=%ndpver%-%nkb%-x64.msp"
+    set "x64msp%%i=%ndpver%-!x64kb%%i!-x64.msp"
   )
 )
 if %do86% equ 1 for /l %%i in (1,1,%_ci%) do (
